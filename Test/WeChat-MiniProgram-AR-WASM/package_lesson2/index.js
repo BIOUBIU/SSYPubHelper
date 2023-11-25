@@ -93,12 +93,28 @@ Page({
 	},
 	imgProcess2(imageData, canvasDom) {
 		let src = cv.imread(imageData);
-		let dst = new cv.Mat();
+		//let dst = new cv.Mat();
 
+
+    let dst = cv.Mat.zeros(src.rows, src.cols, cv.CV_8UC3);
+/*
+cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
+cv.threshold(src, src, 120, 200, cv.THRESH_BINARY);
+*/
+/*
 		// 灰度化
-		cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
+    cv.cvtColor(src, src, cv.COLOR_RGBA2GRAY, 0);
+    */
 		// 边缘检测
-		cv.Canny(src, dst, 50, 100, 3, false);
+    cv.Canny(src, dst, 50, 100, 3, false);
+    
+/*
+    ///
+    ksize = new cv.Size(5, 5);
+    // You can try more different parameters
+    cv.GaussianBlur(dst, dst, ksize, 0, 0, cv.BORDER_DEFAULT);
+    ///
+*/
         //Find all contours
         let contours = new cv.MatVector();
         let hierarchy = new cv.Mat();
@@ -164,11 +180,35 @@ let dsize = new cv.Size(theWidth, theHeight);
 let M = cv.getPerspectiveTransform(srcCoords, finalDestCoords)
 cv.warpPerspective(src, dst, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
         cv.imshow(canvasDom,dst);
-        //cv.Canny(dst, dst, 50, 100, 3, false);
-        //cv.imshow(canvasDom,dst);
+        
+        let srccc=dst;
+        
+        /*
+        let CannyInput = dst;
+        let CannyOutput = new cv.Mat();
+        cv.Canny(CannyInput, CannyOutput, 44, 45, 3, false);
+        cv.imshow(canvasDom,CannyOutput);
+        */
+        
+       cv.cvtColor(srccc, srccc, cv.COLOR_RGBA2GRAY, 0);
+       cv.threshold(srccc, srccc, 120, 200, cv.THRESH_BINARY);
+        
+let ctours = new cv.MatVector();
+let hrarchy = new cv.Mat();
+// You can try more different parameters
+cv.findContours(srccc, ctours, hrarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+// draw contours with random Scalar
+for (let i = 0; i < ctours.size(); ++i) {
+    let color = new cv.Scalar(Math.round(Math.random() * 255), Math.round(Math.random() * 255),
+                              Math.round(Math.random() * 255));
+    cv.drawContours(dst, ctours, i, color, 1, cv.LINE_8, hrarchy, 100);
+}
+cv.imshow(canvasDom, dst);
+
 		src.delete();
 		dst.delete()
-	},
+  },
+  
 	imgProcess3(imageData, canvasDom) {
 		let src = cv.imread(imageData);
 		let dst = new cv.Mat();

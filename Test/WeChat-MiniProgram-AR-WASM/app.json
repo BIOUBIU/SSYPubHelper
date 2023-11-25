@@ -1,0 +1,29 @@
+{
+  "pages": [
+    "pages/index"
+  ],
+  "subpackages": [
+    {
+      "root": "package_lesson1",
+      "pages": [
+        "index"
+      ]
+    },
+    {
+      "root": "package_lesson2",
+      "pages": [
+        "index"
+      ]
+    }
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "运行WASM",
+    "navigationBarTextStyle": "black"
+  },
+  "sitemapLocation": "sitemap.json",
+  "useExtendedLib": {
+    "weui": true
+  }
+}

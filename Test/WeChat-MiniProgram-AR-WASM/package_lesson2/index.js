@@ -198,11 +198,37 @@ let hrarchy = new cv.Mat();
 // You can try more different parameters
 cv.findContours(srccc, ctours, hrarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
 // draw contours with random Scalar
+/*
 for (let i = 0; i < ctours.size(); ++i) {
     let color = new cv.Scalar(Math.round(Math.random() * 255), Math.round(Math.random() * 255),
                               Math.round(Math.random() * 255));
     cv.drawContours(dst, ctours, i, color, 1, cv.LINE_8, hrarchy, 100);
+
+
 }
+*/
+
+
+let drawedCts = new Array;
+
+for (let i = 0; i < ctours.size(); i++){
+    let c = ctours.get(i);
+    let rect = cv.boundingRect(c);
+    let ar = rect.width/rect.height;
+    if(rect.width <= 10 && ar >=1.8 && ar <= 2.2)
+    {
+        drawedCts.push(c);
+    }
+}
+console.log(drawedCts);
+
+/*
+for (let i = 0; i < ctours.size(); ++i) {
+    let color = new cv.Scalar(Math.round(Math.random() * 255), Math.round(Math.random() * 255),
+                              Math.round(Math.random() * 255));
+    cv.drawContours(dst,drawedCts, i, color, 1, cv.LINE_8, hrarchy, 100);
+}
+*/
 cv.imshow(canvasDom, dst);
 
 		src.delete();
